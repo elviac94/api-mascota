@@ -24,14 +24,17 @@ type KpiMascota struct {
 	Desviacion         float32 `json:"desviación estándar edad perro"`
 }
 
+var arrPet []Pet
+
 func createPet(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Crear mascota")
 	var newPet Pet
 	err := json.NewDecoder(r.Body).Decode(&newPet)
 	if err != nil {
 		fmt.Println("Error: ", err)
 		return
 	}
+
+	arrPet = append(arrPet, newPet)
 
 	json.NewEncoder(w).Encode(newPet)
 
@@ -44,6 +47,11 @@ func getKpiPet(w http.ResponseWriter, r *http.Request) {
 		Desviacion:         12.25,
 	}
 	json.NewEncoder(w).Encode(mascota)
+}
+
+func getListPets(w http.ResponseWriter, r *http.Request) {
+
+	json.NewEncoder(w).Encode(arrPet)
 }
 
 func main() {
@@ -59,6 +67,7 @@ func main() {
 
 	router.HandleFunc("/creamascota", createPet).Methods("POST")
 	router.HandleFunc("/kpidemascotas", getKpiPet).Methods("GET")
+	router.HandleFunc("/lismascotas", getListPets).Methods("GET")
 
 	log.Fatal(server.ListenAndServe())
 }
