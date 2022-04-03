@@ -18,6 +18,12 @@ type Pet struct {
 	FechaNacimiento string `json:"fecha nacimiento"`
 }
 
+type KpiMascota struct {
+	EspecieMasNumerosa string  `json:"especie mas numerosa"`
+	EdadPromedio       string  `json:"edad promedio perro"`
+	Desviacion         float32 `json:"desviación estándar edad perro"`
+}
+
 func createPet(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Crear mascota")
 	var newPet Pet
@@ -31,7 +37,17 @@ func createPet(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func getKpiPet(w http.ResponseWriter, r *http.Request) {
+	mascota := &KpiMascota{
+		EspecieMasNumerosa: "Krill Antártico",
+		EdadPromedio:       "8,5",
+		Desviacion:         12.25,
+	}
+	json.NewEncoder(w).Encode(mascota)
+}
+
 func main() {
+
 	router := mux.NewRouter()
 	port := ":8022"
 	server := &http.Server{
@@ -42,6 +58,7 @@ func main() {
 	}
 
 	router.HandleFunc("/creamascota", createPet).Methods("POST")
+	router.HandleFunc("/kpidemascotas", getKpiPet).Methods("GET")
 
 	log.Fatal(server.ListenAndServe())
 }
