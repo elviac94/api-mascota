@@ -1,0 +1,100 @@
+basePath: /
+definitions:
+  main.KpiMascota:
+    properties:
+      desviación estándar edad perro:
+        description: Desviación estándar de las edades de las mascotas
+        type: number
+      edad promedio perro:
+        description: Edad promedio de mis mascotas
+        type: string
+      especie mas numerosa:
+        description: Especie más numerosa
+        type: string
+    type: object
+  main.Pet:
+    properties:
+      edad:
+        description: Edad de la mascota
+        type: integer
+      especie:
+        description: Especie de la mascota
+        type: string
+      fecha nacimiento:
+        description: Fecha de nacimiento de la mascota
+        type: string
+      genero:
+        description: Genero de la mascota
+        type: string
+      nombre:
+        description: Nombre de la mascota
+        type: string
+    type: object
+host: localhost:8022
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: 'Microservicio con 3 endpoints:'
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: API - Mascota"
+  version: "1.0"
+paths:
+  /crearmascota:
+    post:
+      operationId: create-pet
+      parameters:
+      - description: nombre,especie,genero,edad,fecha de nacimiento
+        in: body
+        name: pet
+        required: true
+        schema:
+          $ref: '#/definitions/main.Pet'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Pet'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: not
+      summary: Crea el registro de una mascota con los datos introducidos
+  /kpidemascotas:
+    get:
+      operationId: get-kpi-pet
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.KpiMascota'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: not
+      summary: Obtiene los datos de kpi mascota
+  /lismascotas:
+    get:
+      operationId: get-list-pet
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Pet'
+            type: array
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: not
+      summary: Obtiene el listado de mascotas
+swagger: "2.0"
